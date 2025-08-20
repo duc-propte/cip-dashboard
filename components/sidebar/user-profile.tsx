@@ -1,7 +1,7 @@
 "use client"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Mail, Phone } from "lucide-react"
+import { Mail, Phone, MapPin } from "lucide-react"
 import { User } from "@/types"
 
 interface UserProfileProps {
@@ -84,6 +84,16 @@ export default function UserProfile({ user }: UserProfileProps) {
                 {user.email}
               </span>
             </div>
+
+            {/* Location/Suburb */}
+            {(user.suburb || user.location) && (
+              <div className="flex items-center space-x-2 text-sm">
+                <MapPin className="w-4 h-4 text-slate-500 dark:text-slate-400 flex-shrink-0" />
+                <span className="text-slate-600 dark:text-slate-400 truncate">
+                  {user.suburb ? `${user.suburb}${user.location ? `, ${user.location}` : ''}` : user.location}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -71,7 +71,7 @@ export default function EngagementTimeHeatmap({ data, className }: EngagementTim
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Activity className="h-5 w-5 text-blue-600" />
-            <CardTitle>Engagement Time Heatmap</CardTitle>
+            <CardTitle className="text-lg">Engagement Time Heatmap</CardTitle>
           </div>
           <div className="flex items-center space-x-2">
             <Button

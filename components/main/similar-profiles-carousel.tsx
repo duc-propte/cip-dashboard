@@ -127,13 +127,10 @@ export default function SimilarProfilesCarousel() {
     <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <Users className="w-5 h-5" />
             Similar Profiles
           </h2>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-            Customers with similar demographics and engagement patterns
-          </p>
         </div>
         <div className="flex items-center space-x-2">
           <span className="text-sm text-slate-500 dark:text-slate-400">

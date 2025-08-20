@@ -149,13 +149,10 @@ export default function OtherEngagedProjects() {
     <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <Building2 className="w-5 h-5" />
             Other Engaged Projects
           </h2>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-            Projects this customer has shown interest in
-          </p>
         </div>
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">

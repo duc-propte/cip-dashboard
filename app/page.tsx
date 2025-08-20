@@ -1,6 +1,7 @@
+'use client';
+
+import { useState } from 'react';
 import DashboardLayout from '@/components/layout/dashboard-layout';
-import LeftSidebar from '@/components/layout/left-sidebar';
-import RightSidebar from '@/components/layout/right-sidebar';
 import MainContent from '@/components/layout/main-content';
 import ActionRecommendations from '@/components/main/action-recommendations';
 import ActivityTimeline from '@/components/main/activity-timeline';
@@ -8,7 +9,56 @@ import SimilarProfilesCarousel from '@/components/main/similar-profiles-carousel
 import OtherEngagedProjects from '@/components/main/other-engaged-projects';
 import EngagementTimeHeatmap from '@/components/main/engagement-time-heatmap';
 
+// Import versioned components for demonstration
+import ActionRecommendationsV4 from '@/components/action-recommendations-versions/action-recommendations-v4';
+import ActivityTimelineV1 from '@/components/activity-timeline-versions/activity-timeline-v1';
+import EngagementTimeHeatmapV4 from '@/components/engagement-time-heatmap-versions/engagement-time-heatmap-v4';
+
+// Import versioned sidebar components
+import UserProfileV4 from '@/components/user-profile-versions/user-profile-v4';
+import EngagementFeedV4 from '@/components/engagement-feed-versions/engagement-feed-v4';
+
+// Import regular sidebar components for other versions
+import UserProfile from '@/components/sidebar/user-profile';
+import EngagementScore from '@/components/sidebar/engagement-score';
+import KeyInterests from '@/components/sidebar/key-interests';
+import ChannelEngagement from '@/components/sidebar/channel-engagement';
+import PropensityPredictions from '@/components/sidebar/propensity-predictions';
+import ProfileBadges from '@/components/sidebar/profile-badges';
+import EngagementFeed from '@/components/sidebar/engagement-feed';
+import ChurnMonitoring from '@/components/sidebar/churn-monitoring';
+import RecencyMonitor from '@/components/sidebar/recency-monitor';
+import PurchaseCycle from '@/components/sidebar/purchase-cycle';
+import { User } from '@/types';
+
+// Define available dashboard versions
+const dashboardVersions = [
+  { 
+    id: 'original', 
+    name: 'Original', 
+    description: 'Enhanced dashboard with purchase cycle and activity timeline' 
+  },
+  { 
+    id: 'v2', 
+    name: 'Version 2', 
+    description: 'Classic dashboard layout with standard components' 
+  },
+];
+
 export default function Home() {
+  const [selectedVersion, setSelectedVersion] = useState('original');
+
+  // Mock user data with suburb information
+  const mockUser: User = {
+    id: "1",
+    name: "John Doe",
+    email: "john.doe@company.com",
+    phone: "+1 (555) 123-4567",
+    avatar: "", // Empty string will fall back to initials
+    lastActive: new Date('2024-12-22T10:00:00Z').toISOString(), // Fixed date to avoid hydration issues
+    location: "Geelong, Victoria",
+    suburb: "Waurn Ponds"
+  };
   // Mock data for engagement time heatmap - using deterministic data to avoid hydration issues
   const generateMockHeatmapData = () => {
     const timeSlots = [];
@@ -92,27 +142,115 @@ export default function Home() {
 
   const heatmapData = generateMockHeatmapData();
 
+  // Create version-aware left sidebar
+  const renderLeftSidebar = () => {
+    return (
+      <div className="min-h-full">
+        {/* Profile Header - Version specific */}
+        {selectedVersion === 'original' ? (
+          <UserProfileV4 user={mockUser} />
+        ) : (
+          <UserProfile user={mockUser} />
+        )}
+        
+        {selectedVersion === 'original' ? (
+          <>
+            {/* Engagement Score - directly under profile summary */}
+            <EngagementScore />
+            
+            {/* Purchase Cycle - below engagement score */}
+            <PurchaseCycle />
+            
+            {/* Other components */}
+            <ProfileBadges />
+            <KeyInterests />
+            <PropensityPredictions />
+            <ChannelEngagement />
+          </>
+        ) : (
+          <>
+            {/* V2 (former original) layout */}
+            <EngagementScore />
+            <ProfileBadges />
+            <KeyInterests />
+            <PropensityPredictions />
+            <ChannelEngagement />
+          </>
+        )}
+      </div>
+    );
+  };
+
+  // Create version-aware right sidebar
+  const renderRightSidebar = () => {
+    return (
+      <div className="min-h-full">
+        {/* Engagement Feed - Version specific */}
+        {selectedVersion === 'original' ? (
+          <EngagementFeedV4 />
+        ) : (
+          <EngagementFeed />
+        )}
+        
+        {/* Other components remain the same for now */}
+        <ChurnMonitoring />
+        <RecencyMonitor />
+      </div>
+    );
+  };
+
+  // Component renderers based on version
+  const renderActionRecommendations = () => {
+    switch (selectedVersion) {
+      case 'original': return <ActionRecommendationsV4 />;
+      case 'v2': return <ActionRecommendations />;
+      default: return <ActionRecommendationsV4 />;
+    }
+  };
+
+  const renderActivityTimeline = () => {
+    switch (selectedVersion) {
+      case 'original': return <ActivityTimelineV1 />;
+      case 'v2': return <ActivityTimeline />;
+      default: return <ActivityTimelineV1 />;
+    }
+  };
+
+  const renderEngagementTimeHeatmap = () => {
+    switch (selectedVersion) {
+      case 'original': return <EngagementTimeHeatmapV4 />;
+      case 'v2': return <EngagementTimeHeatmap data={heatmapData} />;
+      default: return <EngagementTimeHeatmapV4 />;
+    }
+  };
+
   return (
     <DashboardLayout
-      leftSidebar={<LeftSidebar />}
-      rightSidebar={<RightSidebar />}
+      leftSidebar={renderLeftSidebar()}
+      rightSidebar={renderRightSidebar()}
     >
-      <MainContent title="Waurn Ponds">
+      <MainContent 
+        title="Waurn Ponds"
+        subtitle={`Dashboard ${selectedVersion === 'original' ? '' : selectedVersion.toUpperCase()} - CIP Customer Intelligence Platform`}
+        dashboardVersion={selectedVersion}
+        onVersionChange={setSelectedVersion}
+        availableVersions={dashboardVersions}
+      >
         <div className="space-y-6">
           {/* Action Recommendations Section */}
-          <ActionRecommendations />
+          {renderActionRecommendations()}
           
           {/* Activity Timeline Section */}
-          <ActivityTimeline />
+          {renderActivityTimeline()}
+          
+          {/* Engagement Time Heatmap Section */}
+          {renderEngagementTimeHeatmap()}
           
           {/* Similar Profiles Carousel Section */}
           <SimilarProfilesCarousel />
           
           {/* Other Engaged Projects Section */}
           <OtherEngagedProjects />
-          
-          {/* Engagement Time Heatmap Section */}
-          <EngagementTimeHeatmap data={heatmapData} />
           
         </div>
       </MainContent>

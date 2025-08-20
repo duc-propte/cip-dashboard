@@ -368,7 +368,7 @@ export default function ProfileBadges({ data }: ProfileBadgesProps) {
       )}
 
       {/* Badges List */}
-      <div className="space-y-2 max-h-[420px] overflow-y-auto scrollbar-hide">
+      <div className="space-y-2 max-h-[550px] overflow-y-auto scrollbar-hide">
         {mockData.badges.map((badge) => {
           const isExpanded = expandedBadges.has(badge.id)
           return (

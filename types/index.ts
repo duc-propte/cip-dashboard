@@ -7,6 +7,8 @@ export interface User {
   phone?: string;
   avatar?: string;
   lastActive?: string;
+  location?: string;
+  suburb?: string;
 }
 
 export interface ApiResponse<T> {
