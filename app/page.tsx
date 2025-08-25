@@ -35,13 +35,13 @@ import { User } from '@/types';
 const dashboardVersions = [
   { 
     id: 'original', 
-    name: 'Original', 
-    description: 'Enhanced dashboard with purchase cycle and activity timeline' 
+    name: 'Version 1', 
+    description: 'Enhanced dashboard for land sales with purchase cycle and prospect timeline' 
   },
   { 
     id: 'v2', 
     name: 'Version 2', 
-    description: 'Classic dashboard layout with standard components' 
+    description: 'Classic real estate dashboard with standard prospect management' 
   },
 ];
 
@@ -53,9 +53,9 @@ export default function Home() {
     id: "1",
     name: "John Doe",
     email: "john.doe@company.com",
-    phone: "+1 (555) 123-4567",
+    phone: "+61 3 5229 1234", // Australian phone number with country code
     avatar: "", // Empty string will fall back to initials
-    lastActive: new Date('2024-12-22T10:00:00Z').toISOString(), // Fixed date to avoid hydration issues
+    lastActive: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 1 day ago active
     location: "Geelong, Victoria",
     suburb: "Waurn Ponds"
   };
@@ -230,8 +230,8 @@ export default function Home() {
       rightSidebar={renderRightSidebar()}
     >
       <MainContent 
-        title="Waurn Ponds"
-        subtitle={`Dashboard ${selectedVersion === 'original' ? '' : selectedVersion.toUpperCase()} - CIP Customer Intelligence Platform`}
+        title="Waurn Ponds Estate"
+        subtitle={`Real Estate Sales Dashboard ${selectedVersion === 'original' ? '' : selectedVersion.toUpperCase()} - Project-Level Profile Analytics`}
         dashboardVersion={selectedVersion}
         onVersionChange={setSelectedVersion}
         availableVersions={dashboardVersions}
@@ -245,13 +245,12 @@ export default function Home() {
           
           {/* Engagement Time Heatmap Section */}
           {renderEngagementTimeHeatmap()}
-          
-          {/* Similar Profiles Carousel Section */}
-          <SimilarProfilesCarousel />
-          
+
           {/* Other Engaged Projects Section */}
           <OtherEngagedProjects />
           
+          {/* Similar Profiles Carousel Section */}
+          <SimilarProfilesCarousel />          
         </div>
       </MainContent>
     </DashboardLayout>

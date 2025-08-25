@@ -54,34 +54,34 @@ export default function UserProfileV4({ user }: UserProfileV4Props) {
     return `${diffInDays}d ago`
   }
 
-  // Project-specific communication data for Waurn Ponds
+  // Project-specific communication data for Waurn Ponds Estate
   const projectCommunications = {
     emails: [
       {
         id: 'email-1',
         timestamp: '2024-12-20T14:30:00Z',
-        subject: 'Lot 47 - Price and Availability Inquiry',
-        content: 'Inquiry about pricing and availability for Lot 47, expressed interest in the corner position',
+        subject: 'Waurn Ponds Estate - Lot 47 Pricing & Land Features',
+        content: 'Inquiry about pricing and land covenant for Lot 47. Interested in the corner position with north-facing backyard and proximity to the estate entrance.',
         lotNumbers: ['47'],
-        priceRange: '$450k-$500k',
+        priceRange: '$485k-$520k',
         contactEmail: 'john.doe@company.com'
       },
       {
         id: 'email-2',
         timestamp: '2024-12-19T09:15:00Z',
-        subject: 'Settlement Timeline Questions',
-        content: 'Questions about construction timeline and settlement process',
+        subject: 'Re: Settlement Process & Construction Timeline',
+        content: 'Follow-up questions about title registration timeframes and building permit process. Keen to understand council requirements for Waurn Ponds Estate.',
         lotNumbers: ['Multiple'],
-        priceRange: 'General inquiry',
+        priceRange: '$450k-$580k',
         contactEmail: 'j.doe@personalmail.com'
       },
       {
         id: 'email-3',
         timestamp: '2024-12-18T16:45:00Z',
-        subject: 'Site Visit Confirmation',
-        content: 'Confirmed site visit appointment for December 23rd to view available lots',
+        subject: 'Site Inspection - Waurn Ponds Premium Lots',
+        content: 'Confirmed site visit appointment for December 23rd at 10:30am. Interested in viewing corner lots and elevated positions with Geelong views.',
         lotNumbers: ['47', '52', '61'],
-        priceRange: '$450k-$550k',
+        priceRange: '$485k-$650k',
         contactEmail: 'john.doe@company.com'
       }
     ],
@@ -89,22 +89,22 @@ export default function UserProfileV4({ user }: UserProfileV4Props) {
       {
         id: 'call-1',
         timestamp: '2024-12-19T16:45:00Z',
-        duration: '12 minutes',
-        purpose: 'Lot 47 Follow-up Discussion',
-        content: 'Discussed pricing options for Lot 47, customer showed strong interest, mentioned timeline concerns',
+        duration: '15 minutes',
+        purpose: 'Lot 47 Negotiation & Settlement Discussion',
+        content: 'Discussed land price negotiation for Lot 47. Customer expressed strong purchase intent, concerned about current interest rates. Discussed settlement terms and deposit structure.',
         lotNumbers: ['47'],
-        contactPhone: '+1 (555) 123-4567',
-        nextAction: 'Email pricing breakdown by Friday'
+        contactPhone: '+61 3 5229 1234',
+        nextAction: 'Prepare formal pricing proposal with settlement options'
       },
       {
         id: 'call-2',
         timestamp: '2024-12-17T11:20:00Z',
-        duration: '8 minutes',
-        purpose: 'Initial Inquiry Call',
-        content: 'First contact call about Waurn Ponds development, interested in family-friendly lots',
+        duration: '12 minutes',
+        purpose: 'Waurn Ponds Estate - Initial Land Inquiry',
+        content: 'First contact regarding Waurn Ponds land release. Customer interested in family-friendly lots near the playground reserve. Budget around $500k.',
         lotNumbers: ['General inquiry'],
-        contactPhone: '+1 (555) 987-6543',
-        nextAction: 'Prepare lot comparison sheet'
+        contactPhone: '+61 3 5229 5678',
+        nextAction: 'Send estate master plan and available lot comparison'
       }
     ]
   };

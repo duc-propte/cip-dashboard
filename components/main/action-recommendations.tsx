@@ -1,8 +1,29 @@
 "use client"
 
 import { useState } from "react"
-import { Phone, Mail, Calendar, FileText, AlertTriangle, TrendingUp, Target, Users, Clock, CheckCircle, X } from "lucide-react"
+import { Phone, Mail, Calendar, FileText, AlertTriangle, TrendingUp, Target, Users, Clock, CheckCircle, X, ChevronLeft, ChevronRight } from "lucide-react"
 import { ActionRecommendationsData, ActionRecommendation } from "@/types"
+
+interface PersonalizedPopupContent {
+  headline: string
+  subheading: string
+  bulletPoints: string[]
+  ctaButton: string
+  secondaryCta: string
+  urgencyText: string
+  personalizedNote: string
+}
+
+interface PopupOption {
+  id: string
+  name: string
+  description: string
+  content: PersonalizedPopupContent
+}
+
+interface EnhancedActionRecommendation extends ActionRecommendation {
+  popupOptions?: PopupOption[]
+}
 import {
   Carousel,
   CarouselContent,
@@ -17,33 +38,95 @@ interface ActionRecommendationsProps {
 
 export default function ActionRecommendations({ data }: ActionRecommendationsProps) {
   const [dismissedActions, setDismissedActions] = useState<Set<string>>(new Set())
+  const [modalPreview, setModalPreview] = useState<string | null>(null)
+  const [currentPopupOption, setCurrentPopupOption] = useState<number>(0)
 
   // Mock data - in a real app, this would come from props or API
   const mockData: ActionRecommendationsData = data || {
     lastUpdated: "2024-12-22T10:30:00Z",
-    totalRecommendations: 6,
+    totalRecommendations: 7,
     recommendations: [
       {
+        id: "7",
+        title: "Deploy Personalized Website Popup",
+        description: "Customer shows high intent for Waurn Ponds lots. Deploy targeted popup with personalized messaging to capture immediate interest.",
+        priority: "high",
+        category: "engagement",
+        actionType: "content",
+        estimatedImpact: 72,
+        timeframe: "Within 1 hour",
+        basedOn: ["Multiple Lot 47 views", "High session duration", "Return visitor behavior"],
+        suggestedActions: [
+          "Deploy personalized popup when viewing Waurn Ponds lots",
+          "Include immediate contact and booking options",
+          "Display personalized lot recommendations",
+          "Show limited-time Waurn Ponds incentives"
+        ],
+        icon: "content",
+        popupOptions: [
+          {
+            id: "family-focused",
+            name: "Family-Focused Appeal",
+            description: "Emphasizes family benefits and neighborhood features",
+            content: {
+              headline: "🏡 Waurn Ponds Estate - Your Dream Home Awaits!",
+              subheading: "Based on your browsing, these lots match your family needs perfectly",
+              bulletPoints: [
+                "✅ Premium corner lots from 650-750m²",
+                "✅ Family-friendly precinct near playground",
+                "✅ $485k-$520k range matches your searches",
+                "✅ Ready to build with all services connected",
+                "🎁 Book this week: Free $15,000 landscape package"
+              ],
+              ctaButton: "Book Site Visit This Weekend",
+              secondaryCta: "Download Waurn Ponds Estate Guide",
+              urgencyText: "Only 5 premium lots remaining in this release",
+              personalizedNote: "Hi John! We've reserved information about lots that match your family-focused search criteria."
+            }
+          },
+          {
+            id: "investment-focused",
+            name: "Investment Opportunity",
+            description: "Highlights investment potential and ROI",
+            content: {
+              headline: "💰 Waurn Ponds Investment Opportunity",
+              subheading: "High-growth area with excellent capital appreciation potential",
+              bulletPoints: [
+                "📈 Geelong's fastest growing suburb - 12% annual growth",
+                "🏗️ Major infrastructure developments planned",
+                "💎 Premium lots in high-demand location",
+                "🎯 Strong rental yield potential",
+                "⚡ Ready to build - immediate returns possible"
+              ],
+              ctaButton: "Get Investment Analysis",
+              secondaryCta: "Download ROI Report",
+              urgencyText: "Prime investment opportunities selling fast",
+              personalizedNote: "John, based on your research into property values, this presents an excellent investment opportunity."
+            }
+          }
+        ]
+      },
+      {
         id: "1",
-        title: "High-Intent Follow-up Call",
-        description: "User has clicked phone contact twice and viewed premium lots. Strong purchase intent detected.",
+        title: "High-Intent Waurn Ponds Follow-up Call",
+        description: "User has clicked phone contact twice and viewed Waurn Ponds premium lots. Strong land purchase intent detected.",
         priority: "high",
         category: "follow-up",
         actionType: "call",
         estimatedImpact: 85,
         timeframe: "Within 2 hours",
-        basedOn: ["2 phone clicks", "Premium lot views", "High engagement score"],
+        basedOn: ["2 phone clicks", "Waurn Ponds premium lot views", "High engagement score"],
         suggestedActions: [
           "Call within 2 hours for maximum conversion",
-          "Prepare information about lots A-12 and B-07",
-          "Have pricing options for 300k-400k range ready"
+          "Prepare information about Waurn Ponds lots 47 and 52",
+          "Have pricing options for $485k-$520k range ready"
         ],
         icon: "phone"
       },
       {
         id: "2",
-        title: "Send Targeted Property Package",
-        description: "User shows strong interest in 250-300m² lots. Send curated property package.",
+        title: "Send Targeted Waurn Ponds Package",
+        description: "User shows strong interest in 650-750m² lots. Send curated Waurn Ponds estate package.",
         priority: "high",
         category: "engagement",
         actionType: "email",
@@ -51,16 +134,16 @@ export default function ActionRecommendations({ data }: ActionRecommendationsPro
         timeframe: "Today",
         basedOn: ["Lot size preference", "Multiple property views", "Brochure downloads"],
         suggestedActions: [
-          "Send personalized email with 250-300m² lot options",
-          "Include virtual tour links",
-          "Highlight similar properties to previously viewed lots"
+          "Send personalized email with 650-750m² Waurn Ponds lot options",
+          "Include Waurn Ponds virtual tour links",
+          "Highlight estate master plan and playground precinct proximity"
         ],
         icon: "mail"
       },
       {
         id: "3",
-        title: "Schedule Site Visit",
-        description: "User engagement pattern suggests readiness for site visit. High conversion probability.",
+        title: "Schedule Waurn Ponds Site Visit",
+        description: "User engagement pattern suggests readiness for Waurn Ponds site inspection. High land purchase probability.",
         priority: "medium",
         category: "opportunity",
         actionType: "meeting",
@@ -68,9 +151,9 @@ export default function ActionRecommendations({ data }: ActionRecommendationsPro
         timeframe: "This week",
         basedOn: ["Multiple lot views", "Consistent engagement", "Price range alignment"],
         suggestedActions: [
-          "Propose site visit for next week",
-          "Focus on lots A-12, B-07, and similar properties",
-          "Prepare comparative analysis of viewed properties"
+          "Propose Waurn Ponds site visit for next week",
+          "Focus on lots 47, 52, and similar corner positions",
+          "Prepare comparative analysis of viewed Waurn Ponds lots"
         ],
         icon: "calendar"
       },
@@ -125,7 +208,7 @@ export default function ActionRecommendations({ data }: ActionRecommendationsPro
         ],
         icon: "phone"
       }
-    ]
+    ] as EnhancedActionRecommendation[]
   }
 
   const getIcon = (iconName: string) => {
@@ -172,6 +255,24 @@ export default function ActionRecommendations({ data }: ActionRecommendationsPro
 
   const handleDismiss = (actionId: string) => {
     setDismissedActions(prev => new Set([...prev, actionId]))
+  }
+
+  const showPopupModal = (actionId: string) => {
+    setModalPreview(actionId)
+    setCurrentPopupOption(0) // Reset to first option when opening modal
+  }
+
+  const closePopupModal = () => {
+    setModalPreview(null)
+    setCurrentPopupOption(0)
+  }
+
+  const nextPopupOption = (maxOptions: number) => {
+    setCurrentPopupOption(prev => (prev + 1) % maxOptions)
+  }
+
+  const previousPopupOption = (maxOptions: number) => {
+    setCurrentPopupOption(prev => (prev - 1 + maxOptions) % maxOptions)
   }
 
   const activeRecommendations = mockData.recommendations.filter(rec => !dismissedActions.has(rec.id))
@@ -269,11 +370,26 @@ export default function ActionRecommendations({ data }: ActionRecommendationsPro
                   </div>
                 </div>
 
-                {/* Action Button */}
-                <button className="w-full bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-sm font-medium py-2 px-4 rounded-lg hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors flex items-center justify-center space-x-2">
-                  <CheckCircle className="w-4 h-4" />
-                  <span>Take Action</span>
-                </button>
+
+
+                {/* Action Buttons */}
+                <div className="space-y-2">
+                  <button className="w-full bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-sm font-medium py-2 px-4 rounded-lg hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors flex items-center justify-center space-x-2">
+                    <CheckCircle className="w-4 h-4" />
+                    <span>Take Action</span>
+                  </button>
+                  
+                  {/* Preview Button for Popup Actions */}
+                  {(recommendation as EnhancedActionRecommendation).popupOptions && (
+                    <button 
+                      onClick={() => showPopupModal(recommendation.id)}
+                      className="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 text-sm font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2"
+                    >
+                      <FileText className="w-4 h-4" />
+                      <span>Preview Popup</span>
+                    </button>
+                  )}
+                </div>
               </div>
             </CarouselItem>
           ))}
@@ -287,6 +403,130 @@ export default function ActionRecommendations({ data }: ActionRecommendationsPro
           <p className="text-xs text-slate-600 dark:text-slate-400">
             {dismissedActions.size} recommendation{dismissedActions.size !== 1 ? 's' : ''} dismissed
           </p>
+        </div>
+      )}
+
+      {/* Popup Preview Modal */}
+      {modalPreview && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={closePopupModal}
+          />
+          
+          {/* Modal Content - Simulating Website Popup */}
+          <div className="relative z-10 w-full max-w-lg mx-4">
+            {(() => {
+              const previewRecommendation = mockData.recommendations.find(r => r.id === modalPreview) as EnhancedActionRecommendation;
+              if (!previewRecommendation?.popupOptions) return null;
+
+              const currentOption = previewRecommendation.popupOptions[currentPopupOption];
+              const totalOptions = previewRecommendation.popupOptions.length;
+              
+              return (
+                <div className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden animate-in zoom-in-95 duration-200">
+                  {/* Close Button */}
+                  <button
+                    onClick={closePopupModal}
+                    className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 flex items-center justify-center transition-colors"
+                  >
+                    <X className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+                  </button>
+
+                  {/* Popup Options Header */}
+                  <div className="bg-slate-50 dark:bg-slate-900 px-6 py-3 border-b border-slate-200 dark:border-slate-700">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                          {currentOption.name}
+                        </h3>
+                        <p className="text-xs text-slate-600 dark:text-slate-400">
+                          {currentOption.description}
+                        </p>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={() => previousPopupOption(totalOptions)}
+                          className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 flex items-center justify-center transition-colors"
+                          disabled={totalOptions <= 1}
+                        >
+                          <ChevronLeft className="w-3 h-3" />
+                        </button>
+                        <span className="text-xs text-slate-600 dark:text-slate-400">
+                          {currentPopupOption + 1}/{totalOptions}
+                        </span>
+                        <button
+                          onClick={() => nextPopupOption(totalOptions)}
+                          className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 flex items-center justify-center transition-colors"
+                          disabled={totalOptions <= 1}
+                        >
+                          <ChevronRight className="w-3 h-3" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Popup Header */}
+                  <div className="p-6 pb-4">
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 pr-8">
+                      {currentOption.content.headline}
+                    </h2>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                      {currentOption.content.subheading}
+                    </p>
+                  </div>
+
+                  {/* Features List */}
+                  <div className="px-6 pb-4">
+                    <div className="space-y-2">
+                      {currentOption.content.bulletPoints.map((point, idx) => (
+                        <div key={idx} className="flex items-start space-x-2">
+                          <span className="text-green-600 text-sm mt-0.5">•</span>
+                          <span className="text-sm text-slate-700 dark:text-slate-300">{point}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Urgency Text */}
+                  <div className="px-6 pb-4">
+                    <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-3">
+                      <p className="text-sm text-orange-700 dark:text-orange-300 font-medium text-center">
+                        ⏰ {currentOption.content.urgencyText}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* CTA Buttons */}
+                  <div className="px-6 pb-4 space-y-3">
+                    <button className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors">
+                      {currentOption.content.ctaButton}
+                    </button>
+                    <button className="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 font-medium py-2 px-4 rounded-lg transition-colors">
+                      {currentOption.content.secondaryCta}
+                    </button>
+                  </div>
+
+                  {/* Personalized Note */}
+                  <div className="px-6 pb-6">
+                    <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+                      <p className="text-sm text-blue-700 dark:text-blue-300 italic">
+                        💬 {currentOption.content.personalizedNote}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Website-like Footer */}
+                  <div className="bg-slate-50 dark:bg-slate-900 px-6 py-3 border-t border-slate-200 dark:border-slate-700">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 text-center">
+                      🏡 Waurn Ponds Estate • Real Estate Excellence
+                    </p>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
         </div>
       )}
     </div>

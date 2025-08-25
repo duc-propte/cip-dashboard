@@ -64,13 +64,13 @@ export default function EngagementFeed({ data }: EngagementFeedProps) {
         type: 'interaction',
         channel: 'phone',
         title: 'Inbound Call Received',
-        description: 'Customer inquiry about Project Aurora pricing',
+        description: 'Customer inquiry about Waurn Ponds Estate lot pricing',
         priority: 'high',
         status: 'new',
         metadata: {
           duration: 450,
           contactMethod: 'Direct line',
-          outcome: 'Follow-up scheduled'
+          outcome: 'Site visit scheduled'
         }
       },
       {
@@ -79,11 +79,11 @@ export default function EngagementFeed({ data }: EngagementFeedProps) {
         type: 'event',
         channel: 'website',
         title: 'Brochure Downloaded',
-        description: 'Premium lot specification sheet accessed',
+        description: 'Waurn Ponds premium lot specification sheet accessed',
         priority: 'medium',
         status: 'acknowledged',
         metadata: {
-          pages: ['Lot 47 Details', 'Pricing Information', 'Floor Plans']
+          pages: ['Waurn Ponds Lot 47 Details', 'Land Pricing Information', 'Estate Master Plan']
         }
       },
       {
@@ -129,12 +129,12 @@ export default function EngagementFeed({ data }: EngagementFeedProps) {
         type: 'interaction',
         channel: 'website',
         title: 'Virtual Tour Completed',
-        description: 'Spent 12 minutes on interactive property tour',
+        description: 'Spent 12 minutes on Waurn Ponds interactive estate tour',
         priority: 'medium',
         status: 'acknowledged',
         metadata: {
           duration: 720,
-          pages: ['Virtual Tour', 'Amenities', 'Location Map']
+          pages: ['Waurn Ponds Virtual Tour', 'Estate Amenities', 'Geelong Location Map']
         }
       }
     ]

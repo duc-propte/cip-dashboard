@@ -26,38 +26,38 @@ export default function PropensityPredictions({ data }: PropensityPredictionsPro
     lastUpdated: "2024-12-22",
     predictions: [
       {
-        metric: "Project Interest",
-        description: "Continue with project",
+        metric: "Land Purchase Intent",
+        description: "Purchase Waurn Ponds land",
         probability: 87.5,
         confidence: "high",
         trend: "increasing",
         icon: "heart",
         reasoning: [
-          { factor: "High Engagement Score", impact: "positive", weight: 35, description: "User shows consistent daily engagement" },
-          { factor: "Feature Usage", impact: "positive", weight: 25, description: "Actively using 8/10 core features" },
-          { factor: "Collaboration Activity", impact: "positive", weight: 20, description: "Regular team interactions and contributions" },
-          { factor: "Support Tickets", impact: "negative", weight: -5, description: "Recent minor issues reported" }
+          { factor: "High Lot Engagement", impact: "positive", weight: 35, description: "Consistent daily viewing of Lot 47 and similar lots" },
+          { factor: "Finance Calculator Usage", impact: "positive", weight: 25, description: "Multiple pricing calculations in target range" },
+          { factor: "Site Inspection Booked", impact: "positive", weight: 20, description: "Scheduled appointment shows serious intent" },
+          { factor: "Location Research", impact: "positive", weight: 15, description: "Extensive research on Waurn Ponds area amenities" }
         ],
         keyInsights: [
-          "User engagement has increased 23% over the last month",
-          "Strong correlation with successful project outcomes",
-          "Above-average feature adoption rate"
+          "Land viewing engagement increased 45% in past week",
+          "Strong correlation with corner lot preferences",
+          "Price range matches lot 47 perfectly"
         ]
       },
       {
-        metric: "Churn Risk",
-        description: "Leave the project",
+        metric: "Competition Risk",
+        description: "Choose competitor estate",
         probability: 12.8,
         confidence: "medium",
         trend: "decreasing",
         icon: "user-x",
         reasoning: [
-          { factor: "Low Recent Activity", impact: "negative", weight: 15, description: "Decreased activity in past 2 weeks" },
-          { factor: "Strong Project History", impact: "positive", weight: -10, description: "Long-term engagement with platform" },
-          { factor: "Positive Feedback", impact: "positive", weight: -8, description: "Recent positive survey responses" }
+          { factor: "Competitor Site Visits", impact: "negative", weight: 15, description: "Visited 2 competitor developments recently" },
+          { factor: "Strong Waurn Ponds Interest", impact: "positive", weight: -10, description: "Consistent return visits to our lots" },
+          { factor: "Local Preference", impact: "positive", weight: -8, description: "Lives in Geelong, prefers Waurn Ponds location" }
         ],
         keyInsights: [
-          "Risk decreased by 18% this month",
+          "Competition risk decreased by 18% this month",
           "User retention improving across similar profiles",
           "Early intervention strategies showing effectiveness"
         ]

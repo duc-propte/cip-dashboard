@@ -13,7 +13,7 @@ export default function EngagementScore({ data }: EngagementScoreProps) {
   // Mock data - in a real app, this would come from props or API
   const mockData: EngagementScoreData = data || {
     totalScore: 547,
-    projectName: "",
+    projectName: "Waurn Ponds Estate",
     trendData: [
       { date: "Dec 9", score: 0 },
       { date: "Dec 10", score: 45 },
@@ -23,22 +23,22 @@ export default function EngagementScore({ data }: EngagementScoreProps) {
       { date: "Dec 14", score: 156 },
       { date: "Dec 15", score: 189 },
       { date: "Dec 16", score: 234, events: [
-        { name: "Data Pipeline Optimization", contribution: 156 },
-        { name: "New User Onboarding", contribution: 78 }
+        { name: "Lot 47 Site Inspection Booked", contribution: 156 },
+        { name: "Brochure Download", contribution: 78 }
       ] }, // Peak
       { date: "Dec 17", score: 198 },
       { date: "Dec 18", score: 456, events: [
-        { name: "Feature Release Launch", contribution: 267 },
-        { name: "User Engagement Campaign", contribution: 134 },
-        { name: "Performance Improvements", contribution: 55 }
+        { name: "Multiple Lot Views (47, 52, 61)", contribution: 267 },
+        { name: "Price Calculator Usage", contribution: 134 },
+        { name: "Estate Master Plan Download", contribution: 55 }
       ] }, // Peak day
       { date: "Dec 19", score: 389 },
       { date: "Dec 20", score: 327 },
       { date: "Dec 21", score: 289 },
       { date: "Dec 22", score: 547, events: [
-        { name: "Holiday Promotion Event", contribution: 298 },
-        { name: "System Architecture Update", contribution: 167 },
-        { name: "Community Milestone", contribution: 82 }
+        { name: "Direct Phone Number Clicks (3x)", contribution: 298 },
+        { name: "Email Inquiry Sent", contribution: 167 },
+        { name: "Finance Calculator Usage", contribution: 82 }
       ] }, // Final peak
     ],
     momentum: [

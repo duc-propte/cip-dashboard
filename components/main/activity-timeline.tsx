@@ -87,9 +87,9 @@ export default function ActivityTimeline() {
         eventDate.setHours(hour, minute)
         
         const websiteActivities = [
-          'Viewed lot A-12', 'Downloaded brochure', 'Viewed pricing page', 'Used mortgage calculator',
-          'Browsed gallery', 'Viewed lot B-07', 'Viewed contact page', 'Checked amenities',
-          'Looked at floor plans', 'Used map feature', 'Read testimonials', 'Viewed FAQ'
+          'Viewed Waurn Ponds Lot 47', 'Downloaded estate brochure', 'Viewed land pricing page', 'Used land finance calculator',
+          'Browsed Waurn Ponds gallery', 'Viewed Waurn Ponds Lot 52', 'Viewed contact page', 'Checked estate amenities',
+          'Looked at master plan', 'Used estate map feature', 'Read Waurn Ponds testimonials', 'Viewed FAQ'
         ]
         
         events.push({

@@ -24,32 +24,32 @@ export default function KeyInterests({ data }: KeyInterestsProps) {
   // Mock data - in a real app, this would come from props or API
   const mockData: KeyInterestsData = data || {
     priceRangeFocus: {
-      range: "300k–400k",
-      minPrice: 300000,
-      maxPrice: 400000,
-      views: 5,
-      brochures: 2,
+      range: "$485k–$520k",
+      minPrice: 485000,
+      maxPrice: 520000,
+      views: 8,
+      brochures: 3,
       lastActivity: "2024-12-22T10:30:00Z",
       lots: [
-        { lotNumber: "A-12", clicks: 3, brochureDownloads: 1, lastViewed: "2024-12-22T10:30:00Z", price: 350000, size: 280 },
-        { lotNumber: "B-07", clicks: 2, brochureDownloads: 1, lastViewed: "2024-12-21T15:45:00Z", price: 375000, size: 265 }
+        { lotNumber: "47", clicks: 5, brochureDownloads: 2, lastViewed: "2024-12-22T10:30:00Z", price: 502000, size: 720 },
+        { lotNumber: "52", clicks: 3, brochureDownloads: 1, lastViewed: "2024-12-21T15:45:00Z", price: 495000, size: 680 }
       ]
     },
     mostViewedLots: [
-      { lotNumber: "A-12", clicks: 3, brochureDownloads: 1, formSubmissions: 1, lastViewed: "2024-12-22T10:30:00Z", price: 350000, size: 280 },
-      { lotNumber: "B-07", clicks: 2, brochureDownloads: 1, lastViewed: "2024-12-21T15:45:00Z", price: 375000, size: 265 },
-      { lotNumber: "C-03", clicks: 1, lastViewed: "2024-12-20T09:15:00Z", price: 320000, size: 245 }
+      { lotNumber: "47", clicks: 5, brochureDownloads: 2, formSubmissions: 1, lastViewed: "2024-12-22T10:30:00Z", price: 502000, size: 720 },
+      { lotNumber: "52", clicks: 3, brochureDownloads: 1, lastViewed: "2024-12-21T15:45:00Z", price: 495000, size: 680 },
+      { lotNumber: "61", clicks: 2, lastViewed: "2024-12-20T09:15:00Z", price: 510000, size: 750 }
     ],
     lotSizeInterest: {
-      range: "250–300m²",
-      minSize: 250,
-      maxSize: 300,
-      lotsViewed: 4,
+      range: "650–750m²",
+      minSize: 650,
+      maxSize: 750,
+      lotsViewed: 6,
       lots: [
-        { lotNumber: "A-12", clicks: 3, lastViewed: "2024-12-22T10:30:00Z", size: 280 },
-        { lotNumber: "B-07", clicks: 2, lastViewed: "2024-12-21T15:45:00Z", size: 265 },
-        { lotNumber: "D-15", clicks: 1, lastViewed: "2024-12-20T14:20:00Z", size: 295 },
-        { lotNumber: "E-08", clicks: 1, lastViewed: "2024-12-19T11:30:00Z", size: 275 }
+        { lotNumber: "47", clicks: 5, lastViewed: "2024-12-22T10:30:00Z", size: 720 },
+        { lotNumber: "52", clicks: 3, lastViewed: "2024-12-21T15:45:00Z", size: 680 },
+        { lotNumber: "61", clicks: 2, lastViewed: "2024-12-20T14:20:00Z", size: 750 },
+        { lotNumber: "35", clicks: 1, lastViewed: "2024-12-19T11:30:00Z", size: 690 }
       ]
     },
     directIntent: {

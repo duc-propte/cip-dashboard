@@ -28,8 +28,8 @@ export default function PurchaseCycle() {
     stages: [
       {
         id: "dreaming",
-        name: "Dreaming",
-        description: "Initial interest and inspiration",
+        name: "Land Dreaming",
+        description: "Initial interest in land/building dreams",
         icon: <Eye className="w-4 h-4" />,
         status: "completed",
         completionDate: "Dec 15, 2024",
@@ -37,40 +37,40 @@ export default function PurchaseCycle() {
       },
       {
         id: "researching",
-        name: "Researching",
-        description: "Active information gathering",
+        name: "Location Research",
+        description: "Researching areas, schools, amenities",
         icon: <Search className="w-4 h-4" />,
         status: "current",
         estimatedDays: 14
       },
       {
         id: "financial-planning",
-        name: "Financial Situation",
-        description: "Budget planning and financing",
+        name: "Land Finance Planning",
+        description: "Land loan pre-approval and budgeting",
         icon: <Calculator className="w-4 h-4" />,
         status: "upcoming",
         estimatedDays: 21
       },
       {
         id: "shortlisting",
-        name: "Shortlisting",
-        description: "Narrowing down options",
+        name: "Estate Shortlisting",
+        description: "Comparing estates and lot options",
         icon: <CheckSquare className="w-4 h-4" />,
         status: "upcoming",
         estimatedDays: 35
       },
       {
         id: "due-diligence",
-        name: "Due Diligence",
-        description: "Detailed evaluation and inspection",
+        name: "Site Inspection",
+        description: "Land inspection and soil/title checks",
         icon: <FileText className="w-4 h-4" />,
         status: "upcoming",
         estimatedDays: 49
       },
       {
         id: "purchase-ready",
-        name: "Purchase Ready",
-        description: "Ready to make final decision",
+        name: "Contract Ready",
+        description: "Ready to sign land contract",
         icon: <ShoppingCart className="w-4 h-4" />,
         status: "upcoming",
         estimatedDays: 56

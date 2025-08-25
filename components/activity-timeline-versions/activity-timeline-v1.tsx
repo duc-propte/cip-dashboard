@@ -145,22 +145,22 @@ export default function ActivityTimelineV1() {
     const lotViewingEvents = [
       {
         id: 'lot-view-1-aug20',
-        title: "Lot A01 view",
-        subtitle: "Property viewing",
+        title: "Waurn Ponds Lot 47 view",
+        subtitle: "Land viewing",
         channel: "website",
         actor: "customer" as const,
         startDate: new Date(2025, 7, 20, 12, 1, 0), // 12:01 PM
         endDate: new Date(2025, 7, 20, 12, 1, 30),   // 12:01:30 PM
-        description: "Customer viewed lot A01",
+        description: "Customer viewed Waurn Ponds Lot 47",
         outcome: "positive" as const,
-        details: "First viewing of lot A01. Customer-initiated activity.",
+        details: "First viewing of Waurn Ponds Lot 47. Customer-initiated activity.",
         assignees: ['JD'],
         propertyDetails: {
-          propertyId: "A01",
-          propertyName: "Sunset Ridge Lot A01",
-          price: 450000,
-          size: 8500,
-          location: "Sunset Ridge, West Valley",
+          propertyId: "47",
+          propertyName: "Waurn Ponds Estate Lot 47",
+          price: 502000,
+          size: 720,
+          location: "Waurn Ponds, Geelong VIC",
           type: "land" as const
         },
         additionalInfo: {
@@ -172,22 +172,22 @@ export default function ActivityTimelineV1() {
       },
       {
         id: 'lot-view-2-aug20',
-        title: "Lot A01 view",
-        subtitle: "Property viewing",
+        title: "Waurn Ponds Lot 47 view",
+        subtitle: "Land viewing",
         channel: "website",
         actor: "customer" as const,
         startDate: new Date(2025, 7, 20, 12, 2, 0), // 12:02 PM
         endDate: new Date(2025, 7, 20, 12, 2, 45),   // 12:02:45 PM
-        description: "Customer viewed lot A01 again",
+        description: "Customer viewed Waurn Ponds Lot 47 again",
         outcome: "positive" as const,
-        details: "Second viewing of lot A01. Customer-initiated activity.",
+        details: "Second viewing of Waurn Ponds Lot 47. Customer-initiated activity.",
         assignees: ['JD'],
         propertyDetails: {
-          propertyId: "A01",
-          propertyName: "Sunset Ridge Lot A01",
-          price: 450000,
-          size: 8500,
-          location: "Sunset Ridge, West Valley",
+          propertyId: "47",
+          propertyName: "Waurn Ponds Estate Lot 47",
+          price: 502000,
+          size: 720,
+          location: "Waurn Ponds, Geelong VIC",
           type: "land" as const
         },
         additionalInfo: {
@@ -199,8 +199,8 @@ export default function ActivityTimelineV1() {
       },
       {
         id: 'lot-view-3-aug20',
-        title: "Lot A01 view",
-        subtitle: "Property viewing",
+        title: "Waurn Ponds Lot 47 view",
+        subtitle: "Land viewing",
         channel: "website",
         actor: "customer" as const,
         startDate: new Date(2025, 7, 20, 12, 3, 0), // 12:03 PM
@@ -210,11 +210,11 @@ export default function ActivityTimelineV1() {
         details: "Third viewing of lot A01. Customer-initiated activity.",
         assignees: ['JD'],
         propertyDetails: {
-          propertyId: "A01",
-          propertyName: "Sunset Ridge Lot A01",
-          price: 450000,
-          size: 8500,
-          location: "Sunset Ridge, West Valley",
+          propertyId: "47",
+          propertyName: "Waurn Ponds Estate Lot 47",
+          price: 502000,
+          size: 720,
+          location: "Waurn Ponds, Geelong VIC",
           type: "land" as const
         },
         additionalInfo: {

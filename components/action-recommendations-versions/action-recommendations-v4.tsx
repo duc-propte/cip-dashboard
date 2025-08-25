@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Phone, Mail, Calendar, FileText, AlertTriangle, TrendingUp, Target, CheckCircle, X, DollarSign, Zap, Star, Phone as PhoneIcon, Mail as MailIcon, Calendar as CalendarIcon } from "lucide-react"
+import { Phone, Mail, Calendar, FileText, AlertTriangle, TrendingUp, Target, CheckCircle, X, DollarSign, Zap, Star, Phone as PhoneIcon, Mail as MailIcon, Calendar as CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react"
 import { ActionRecommendationsData, ActionRecommendation } from "@/types"
 import {
   Carousel,
@@ -11,6 +11,23 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 
+interface PersonalizedPopupContent {
+  headline: string
+  subheading: string
+  bulletPoints: string[]
+  ctaButton: string
+  secondaryCta: string
+  urgencyText: string
+  personalizedNote: string
+}
+
+interface PopupOption {
+  id: string
+  name: string
+  description: string
+  content: PersonalizedPopupContent
+}
+
 interface EnhancedActionRecommendation extends ActionRecommendation {
   dealValue?: number
   conversionLikelihood?: number
@@ -19,6 +36,7 @@ interface EnhancedActionRecommendation extends ActionRecommendation {
   nextBestAction?: string
   competitorThreat?: boolean
   salesInsight?: string
+  popupOptions?: PopupOption[]
 }
 
 interface ActionRecommendationsV4Props {
@@ -28,16 +46,105 @@ interface ActionRecommendationsV4Props {
 export default function ActionRecommendationsV4({}: ActionRecommendationsV4Props) {
   const [dismissedActions, setDismissedActions] = useState<Set<string>>(new Set())
   const [takenActions, setTakenActions] = useState<Set<string>>(new Set())
+  const [modalPreview, setModalPreview] = useState<string | null>(null)
+  const [currentPopupOption, setCurrentPopupOption] = useState<number>(0)
 
   // Enhanced mock data with sales insights
   const mockData = {
     lastUpdated: "2024-12-22T10:30:00Z",
-    totalRecommendations: 6,
+    totalRecommendations: 7,
     recommendations: [
       {
+        id: "7",
+        title: "🎯 Deploy Personalized Website Popup",
+        description: "Customer shows high intent for Lot 47. Deploy targeted popup with personalized messaging to capture immediate interest while browsing.",
+        priority: "high",
+        category: "engagement",
+        actionType: "content",
+        estimatedImpact: 68,
+        timeframe: "Within 1 hour",
+        basedOn: ["Multiple Lot 47 views", "High session duration", "Pricing calculator usage", "Return visitor"],
+        suggestedActions: [
+          "Deploy personalized popup when viewing Lot 47",
+          "Include immediate site visit booking option",
+          "Offer exclusive pricing consultation",
+          "Display limited-time incentive messaging"
+        ],
+        icon: "content",
+        dealValue: 502000,
+        conversionLikelihood: 65,
+        urgencyScore: 80,
+        customerMood: "hot" as const,
+        nextBestAction: "Follow up with direct call if popup engagement occurs",
+        competitorThreat: false,
+        salesInsight: "Personalized popups increase land sale conversions by 35% when triggered at optimal browsing moments.",
+        popupOptions: [
+          {
+            id: "family-focused",
+            name: "Family-Focused Appeal",
+            description: "Emphasizes family benefits and playground proximity",
+            content: {
+              headline: "🏡 Lot 47 Waurn Ponds - Perfect for Your Family!",
+              subheading: "Based on your browsing, this corner lot matches your family preferences perfectly",
+              bulletPoints: [
+                "✅ 720m² corner position with north-facing backyard",
+                "✅ Premium location near playground precinct",
+                "✅ $502,000 - matches your calculated budget range",
+                "✅ Safe, family-friendly neighborhood",
+                "🎁 Limited time: Free landscape package worth $15,000"
+              ],
+              ctaButton: "Book Site Visit This Weekend",
+              secondaryCta: "Download Family Home Guide",
+              urgencyText: "Only 3 premium corner lots remaining in Waurn Ponds Estate",
+              personalizedNote: "Hi John! We noticed you've been interested in family-friendly lots. Lot 47 is perfect for the growing family home you're planning."
+            }
+          },
+          {
+            id: "investment-angle",
+            name: "Investment Opportunity",
+            description: "Focuses on investment potential and growth prospects",
+            content: {
+              headline: "💰 Waurn Ponds Lot 47 - Premium Investment Opportunity",
+              subheading: "Corner lot in high-growth area with excellent capital appreciation potential",
+              bulletPoints: [
+                "📈 Geelong's fastest growing suburb - 12% annual growth",
+                "🏗️ Major infrastructure developments planned nearby",
+                "💎 720m² premium corner position - highly sought after",
+                "🎯 Rental yield potential: $450-500/week",
+                "⚡ Ready to build - no waiting for services"
+              ],
+              ctaButton: "Get Investment Analysis",
+              secondaryCta: "Download ROI Report",
+              urgencyText: "Prime investment lots selling fast - only 3 corner positions left",
+              personalizedNote: "Hi John! Based on your research into property values and ROI calculators, this presents an excellent investment opportunity."
+            }
+          },
+          {
+            id: "urgency-scarcity",
+            name: "Urgency & Scarcity",
+            description: "Creates urgency through scarcity and time-limited offers",
+            content: {
+              headline: "⚡ FINAL RELEASE: Waurn Ponds Lot 47 - Act Now!",
+              subheading: "Last chance to secure this premium corner lot before price increase",
+              bulletPoints: [
+                "🚨 ONLY 3 DAYS LEFT at current pricing",
+                "🔥 Price increasing by $25,000 from Monday",
+                "⭐ Premium corner lot - rarely available",
+                "🎁 TODAY ONLY: Free $20,000 upgrade package",
+                "✅ 720m² in Waurn Ponds' most desired location"
+              ],
+              ctaButton: "SECURE NOW - Save $25K",
+              secondaryCta: "Call Me in 5 Minutes",
+              urgencyText: "⏰ Price lock expires in 72 hours - Don't miss out!",
+              personalizedNote: "John, you've been viewing this lot for 3 days. The price increase is confirmed for Monday - this is your final opportunity to secure it at today's price."
+            }
+          }
+        ]
+      },
+      {
         id: "1",
-        title: "🔥 Strike While Iron's Hot",
-        description: "Customer John clicked phone number 3 times and spent 12 minutes on premium lot pages. High buyer intent detected!",
+        title: "🔥 Strike While Iron's Hot - Waurn Ponds Lot 47",
+        description: "Customer John clicked phone number 3 times and spent 12 minutes on Waurn Ponds premium lot pages. High buyer intent detected for corner lot!",
         priority: "high",
         category: "follow-up",
         actionType: "call",
@@ -46,34 +153,34 @@ export default function ActionRecommendationsV4({}: ActionRecommendationsV4Props
         basedOn: ["3 phone clicks", "12min on premium lots", "Price calculator used 4x", "Viewed similar sold properties"],
         suggestedActions: [
           "Call immediately while interest is peak",
-          "Have lot A-12 details ready - their favorite",
+          "Have Waurn Ponds Lot 47 details ready - their favorite corner position",
           "Mention the 2 similar properties that sold this week",
-          "Prepare financing options for 380-420k range"
+          "Prepare financing options for $485k-$520k range (Waurn Ponds pricing)"
         ],
         icon: "phone",
-        dealValue: 395000,
+        dealValue: 502000,
         conversionLikelihood: 85,
         urgencyScore: 95,
         customerMood: "hot" as const,
-        nextBestAction: "If no answer: Send personalized text with lot A-12 virtual tour link",
+        nextBestAction: "If no answer: Send personalized text with Waurn Ponds Lot 47 virtual tour link",
         competitorThreat: false,
         salesInsight: "Customer behavior matches our 'ready-to-buy' profile. Similar customers convert 78% when contacted within 1 hour."
       },
       {
         id: "2",
-        title: "💰 High-Value Lead Warming Up",
-        description: "Sarah has been comparing premium lots for 3 days. Budget signals indicate 450k+ range. Family-focused browsing pattern.",
+        title: "💰 High-Value Waurn Ponds Family Prospect",
+        description: "Sarah has been comparing Waurn Ponds premium lots for 3 days. Budget signals indicate $450k+ range. Family-focused browsing pattern near playground precinct.",
         priority: "high",
         category: "engagement",
         actionType: "email",
         estimatedImpact: 78,
         timeframe: "Today",
-        basedOn: ["Premium lot focus", "Family amenities research", "School district searches", "Financing calculator: 450k range"],
+        basedOn: ["Waurn Ponds premium lot focus", "Family amenities research", "Local school district searches", "Financing calculator: $450k+ range"],
         suggestedActions: [
-          "Send personalized family-focused property package",
-          "Include school ratings and safety statistics",
-          "Highlight community playground and family events",
-          "Add testimonial from the Johnson family (similar profile)"
+          "Send personalized Waurn Ponds family-focused package",
+          "Include Deakin University proximity and local school ratings",
+          "Highlight estate playground precinct and community events",
+          "Add testimonial from the Johnson family (similar Waurn Ponds residents)"
         ],
         icon: "mail",
         dealValue: 465000,
@@ -239,6 +346,24 @@ export default function ActionRecommendationsV4({}: ActionRecommendationsV4Props
     setTakenActions(prev => new Set([...prev, actionId]))
   }
 
+  const showPopupModal = (actionId: string) => {
+    setModalPreview(actionId)
+    setCurrentPopupOption(0) // Reset to first option when opening modal
+  }
+
+  const closePopupModal = () => {
+    setModalPreview(null)
+    setCurrentPopupOption(0)
+  }
+
+  const nextPopupOption = (maxOptions: number) => {
+    setCurrentPopupOption(prev => (prev + 1) % maxOptions)
+  }
+
+  const previousPopupOption = (maxOptions: number) => {
+    setCurrentPopupOption(prev => (prev - 1 + maxOptions) % maxOptions)
+  }
+
   const activeRecommendations = mockData.recommendations.filter(rec => !dismissedActions.has(rec.id) && !takenActions.has(rec.id))
 
   return (
@@ -355,6 +480,8 @@ export default function ActionRecommendationsV4({}: ActionRecommendationsV4Props
                     </div>
                   </div>
 
+
+
                   {/* Action Buttons */}
                   <div className="space-y-2">
                     <button 
@@ -366,6 +493,16 @@ export default function ActionRecommendationsV4({}: ActionRecommendationsV4Props
                       <span className="text-xs opacity-75">({recommendation.timeframe})</span>
                     </button>
                     
+                    {/* Preview Button for Popup Actions */}
+                    {recommendation.popupOptions && (
+                      <button 
+                        onClick={() => showPopupModal(recommendation.id)}
+                        className="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 text-xs font-medium py-2 px-3 rounded-lg transition-colors flex items-center justify-center space-x-2"
+                      >
+                        <FileText className="w-4 h-4" />
+                        <span>Preview Popup</span>
+                      </button>
+                    )}
 
                   </div>
                 </div>
@@ -407,6 +544,130 @@ export default function ActionRecommendationsV4({}: ActionRecommendationsV4Props
                 }, 0) / 1000).toFixed(0)}K
               </span>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Popup Preview Modal */}
+      {modalPreview && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={closePopupModal}
+          />
+          
+          {/* Modal Content - Simulating Website Popup */}
+          <div className="relative z-10 w-full max-w-lg mx-4">
+            {(() => {
+              const previewRecommendation = mockData.recommendations.find(r => r.id === modalPreview);
+              if (!previewRecommendation?.popupOptions) return null;
+
+              const currentOption = previewRecommendation.popupOptions[currentPopupOption];
+              const totalOptions = previewRecommendation.popupOptions.length;
+              
+              return (
+                <div className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden animate-in zoom-in-95 duration-200">
+                  {/* Close Button */}
+                  <button
+                    onClick={closePopupModal}
+                    className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 flex items-center justify-center transition-colors"
+                  >
+                    <X className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+                  </button>
+
+                  {/* Popup Options Header */}
+                  <div className="bg-slate-50 dark:bg-slate-900 px-6 py-3 border-b border-slate-200 dark:border-slate-700">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                          {currentOption.name}
+                        </h3>
+                        <p className="text-xs text-slate-600 dark:text-slate-400">
+                          {currentOption.description}
+                        </p>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={() => previousPopupOption(totalOptions)}
+                          className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 flex items-center justify-center transition-colors"
+                          disabled={totalOptions <= 1}
+                        >
+                          <ChevronLeft className="w-3 h-3" />
+                        </button>
+                        <span className="text-xs text-slate-600 dark:text-slate-400">
+                          {currentPopupOption + 1}/{totalOptions}
+                        </span>
+                        <button
+                          onClick={() => nextPopupOption(totalOptions)}
+                          className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 flex items-center justify-center transition-colors"
+                          disabled={totalOptions <= 1}
+                        >
+                          <ChevronRight className="w-3 h-3" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Popup Header */}
+                  <div className="p-6 pb-4">
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 pr-8">
+                      {currentOption.content.headline}
+                    </h2>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                      {currentOption.content.subheading}
+                    </p>
+                  </div>
+
+                  {/* Features List */}
+                  <div className="px-6 pb-4">
+                    <div className="space-y-2">
+                      {currentOption.content.bulletPoints.map((point, idx) => (
+                        <div key={idx} className="flex items-start space-x-2">
+                          <span className="text-green-600 text-sm mt-0.5">•</span>
+                          <span className="text-sm text-slate-700 dark:text-slate-300">{point}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Urgency Text */}
+                  <div className="px-6 pb-4">
+                    <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-3">
+                      <p className="text-sm text-orange-700 dark:text-orange-300 font-medium text-center">
+                        ⏰ {currentOption.content.urgencyText}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* CTA Buttons */}
+                  <div className="px-6 pb-4 space-y-3">
+                    <button className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors">
+                      {currentOption.content.ctaButton}
+                    </button>
+                    <button className="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 font-medium py-2 px-4 rounded-lg transition-colors">
+                      {currentOption.content.secondaryCta}
+                    </button>
+                  </div>
+
+                  {/* Personalized Note */}
+                  <div className="px-6 pb-6">
+                    <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+                      <p className="text-sm text-blue-700 dark:text-blue-300 italic">
+                        💬 {currentOption.content.personalizedNote}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Website-like Footer */}
+                  <div className="bg-slate-50 dark:bg-slate-900 px-6 py-3 border-t border-slate-200 dark:border-slate-700">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 text-center">
+                      🏡 Waurn Ponds Estate • Real Estate Excellence
+                    </p>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </div>
       )}
