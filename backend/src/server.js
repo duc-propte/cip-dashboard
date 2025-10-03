@@ -22,21 +22,38 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Session middleware - MUST be after CORS and before routes
-app.use(session({
+const sessionConfig = {
   secret: process.env.SESSION_SECRET || 'your-secret-key-change-in-production',
   resave: false,
   saveUninitialized: false,
+  name: 'sessionId', // Custom name to avoid conflicts
   cookie: {
-    secure: process.env.NODE_ENV === 'production', // true in production (requires HTTPS)
     httpOnly: true, // prevents XSS attacks
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' for cross-site in production
   },
-}));
+};
+
+// Production-specific session config for cross-origin
+if (process.env.NODE_ENV === 'production') {
+  sessionConfig.cookie.secure = true; // Requires HTTPS
+  sessionConfig.cookie.sameSite = 'none'; // Allow cross-origin
+  sessionConfig.proxy = true; // Trust proxy (Render uses proxies)
+  console.log('🔒 Production session config: secure=true, sameSite=none, proxy=true');
+} else {
+  sessionConfig.cookie.sameSite = 'lax';
+  console.log('🔓 Development session config: secure=false, sameSite=lax');
+}
+
+app.set('trust proxy', 1); // Trust first proxy (required for Render)
+app.use(session(sessionConfig));
 
 // Request logging middleware
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  console.log('Session ID:', req.sessionID);
+  console.log('Session exists:', !!req.session);
+  console.log('Salesforce session:', req.session?.salesforce ? 'YES' : 'NO');
+  console.log('Cookies:', req.headers.cookie || 'NO COOKIES');
   next();
 });
 
@@ -46,6 +63,18 @@ app.get('/health', (req, res) => {
     status: 'OK',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
+  });
+});
+
+// Debug endpoint to check session
+app.get('/debug/session', (req, res) => {
+  res.json({
+    sessionExists: !!req.session,
+    sessionID: req.sessionID,
+    hasSalesforceAuth: !!req.session?.salesforce,
+    cookies: req.headers.cookie || 'No cookies',
+    environment: process.env.NODE_ENV,
+    frontendUrl: process.env.FRONTEND_URL,
   });
 });
 
