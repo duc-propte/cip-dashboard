@@ -1,0 +1,44 @@
+<apex:page standardController="Opportunity" showHeader="false" sidebar="false">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .embed-container {
+            width: 100%;
+            height: 100vh;
+            border: none;
+        }
+    </style>
+    
+    <iframe 
+        src="https://your-domain.com/opportunity-profile/{!Opportunity.Id}?embedded=true"
+        class="embed-container"
+        id="opportunityFrame"
+        frameborder="0"
+        scrolling="auto"
+    ></iframe>
+    
+    <script>
+        // Optional: Send opportunity data to iframe
+        window.addEventListener('load', function() {
+            var iframe = document.getElementById('opportunityFrame');
+            var opportunityData = {
+                id: '{!Opportunity.Id}',
+                name: '{!Opportunity.Name}',
+                amount: '{!Opportunity.Amount}',
+                stage: '{!Opportunity.StageName}'
+            };
+            
+            // Post message to iframe when loaded
+            setTimeout(function() {
+                iframe.contentWindow.postMessage({
+                    type: 'SALESFORCE_OPPORTUNITY_DATA',
+                    data: opportunityData
+                }, '*');
+            }, 1000);
+        });
+    </script>
+</apex:page>
+

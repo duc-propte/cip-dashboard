@@ -1,0 +1,27 @@
+{
+  "name": "cip-dashboard-backend",
+  "version": "1.0.0",
+  "description": "Backend API for CIP Dashboard with Salesforce integration",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test-config": "node test-config.js"
+  },
+  "keywords": [
+    "salesforce",
+    "oauth",
+    "api",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsforce": "^3.10.7"
+  }
+}
+
