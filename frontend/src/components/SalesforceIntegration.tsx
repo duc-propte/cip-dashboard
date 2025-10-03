@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Cloud, CheckCircle2, XCircle, Loader2, Database } from 'lucide-react';
 import OpportunitiesList from './OpportunitiesList';
-import { fetchOpportunities, type SalesforceAuthData, type Opportunity } from '@/lib/salesforceApi';
+import { fetchOpportunities, getAuthUrl, type SalesforceAuthData, type Opportunity } from '@/lib/salesforceApi';
 
 export default function SalesforceIntegration() {
   const [isConnected, setIsConnected] = useState(false);
@@ -25,10 +25,9 @@ export default function SalesforceIntegration() {
     
     try {
       // Call backend to get OAuth URL
-      const response = await fetch('http://localhost:3001/api/auth/login');
-      const data = await response.json();
+      const authUrl = await getAuthUrl();
       
-      if (data.authUrl) {
+      if (authUrl) {
         // Open OAuth window
         const width = 600;
         const height = 700;
@@ -36,7 +35,7 @@ export default function SalesforceIntegration() {
         const top = window.screen.height / 2 - height / 2;
         
         const authWindow = window.open(
-          data.authUrl,
+          authUrl,
           'Salesforce OAuth',
           `width=${width},height=${height},top=${top},left=${left}`
         );

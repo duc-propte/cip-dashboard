@@ -4,6 +4,8 @@ import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Loader2, CheckCircle2, XCircle } from 'lucide-react';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+
 function AuthCallbackContent() {
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
@@ -44,7 +46,7 @@ function AuthCallbackContent() {
     }
 
     // Exchange code for tokens
-    fetch('http://localhost:3001/api/auth/callback?code=' + code)
+    fetch(`${API_BASE_URL}/api/auth/callback?code=${code}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
