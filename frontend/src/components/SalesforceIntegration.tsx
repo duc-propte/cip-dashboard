@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Cloud, CheckCircle2, XCircle, Loader2, Database } from 'lucide-react';
 import OpportunitiesList from './OpportunitiesList';
-import { fetchOpportunities, getAuthUrl, type SalesforceAuthData, type Opportunity } from '@/lib/salesforceApi';
+import { fetchOpportunities, getAuthUrl, checkAuthStatus, logout, type SalesforceAuthData, type Opportunity } from '@/lib/salesforceApi';
 
 export default function SalesforceIntegration() {
   const [isConnected, setIsConnected] = useState(false);
@@ -19,69 +19,57 @@ export default function SalesforceIntegration() {
   const [isFetchingOpps, setIsFetchingOpps] = useState(false);
   const [showOpportunities, setShowOpportunities] = useState(false);
 
-  const handleConnect = async () => {
-    setIsLoading(true);
-    setError(null);
+  // Check if user is already authenticated on mount
+  useEffect(() => {
+    checkAuth();
     
+    // Check URL for auth success/error
+    const urlParams = new URLSearchParams(window.location.search);
+    const authSuccess = urlParams.get('auth');
+    const authError = urlParams.get('error');
+    
+    if (authSuccess === 'success') {
+      checkAuth().then(() => {
+        // Clear URL params
+        window.history.replaceState({}, '', window.location.pathname);
+        loadOpportunities();
+      });
+    } else if (authError) {
+      setError(decodeURIComponent(authError));
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, []);
+
+  const checkAuth = async () => {
     try {
-      // Call backend to get OAuth URL
-      const authUrl = await getAuthUrl();
-      
-      if (authUrl) {
-        // Open OAuth window
-        const width = 600;
-        const height = 700;
-        const left = window.screen.width / 2 - width / 2;
-        const top = window.screen.height / 2 - height / 2;
-        
-        const authWindow = window.open(
-          authUrl,
-          'Salesforce OAuth',
-          `width=${width},height=${height},top=${top},left=${left}`
-        );
-
-        // Listen for OAuth callback
-        const handleMessage = async (event: MessageEvent) => {
-          if (event.origin !== window.location.origin) return;
-          
-          if (event.data.type === 'SALESFORCE_AUTH_SUCCESS') {
-            const newAuthData = event.data.authData;
-            setAuthData(newAuthData);
-            setIsConnected(true);
-            setShowAuthDialog(false);
-            authWindow?.close();
-            window.removeEventListener('message', handleMessage);
-            
-            // Save auth data to localStorage for persistence
-            localStorage.setItem('salesforce_auth', JSON.stringify(newAuthData));
-            
-            // Automatically fetch opportunities after successful connection
-            await loadOpportunities(newAuthData);
-            setShowOpportunities(true);
-          } else if (event.data.type === 'SALESFORCE_AUTH_ERROR') {
-            setError(event.data.error);
-            authWindow?.close();
-            window.removeEventListener('message', handleMessage);
-          }
-        };
-
-        window.addEventListener('message', handleMessage);
+      const status = await checkAuthStatus();
+      if (status.authenticated) {
+        setIsConnected(true);
+        setAuthData({
+          userId: status.userId!,
+          organizationId: status.organizationId!,
+        });
+      } else {
+        setIsConnected(false);
+        setAuthData(null);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to connect to Salesforce');
-    } finally {
-      setIsLoading(false);
+      console.error('Auth check failed:', err);
+      setIsConnected(false);
     }
   };
 
-  const loadOpportunities = async (auth: SalesforceAuthData = authData!) => {
-    if (!auth) return;
-    
+  const handleConnect = () => {
+    // Redirect to backend for OAuth (full page redirect)
+    window.location.href = getAuthUrl();
+  };
+
+  const loadOpportunities = async () => {
     setIsFetchingOpps(true);
     setError(null);
     
     try {
-      const opps = await fetchOpportunities(auth);
+      const opps = await fetchOpportunities();
       setOpportunities(opps);
       setShowOpportunities(true);
     } catch (err) {
@@ -91,14 +79,17 @@ export default function SalesforceIntegration() {
     }
   };
 
-  const handleDisconnect = () => {
-    setIsConnected(false);
-    setAuthData(null);
-    setError(null);
-    setOpportunities([]);
-    setShowOpportunities(false);
-    // Clear localStorage
-    localStorage.removeItem('salesforce_auth');
+  const handleDisconnect = async () => {
+    try {
+      await logout();
+      setIsConnected(false);
+      setAuthData(null);
+      setError(null);
+      setOpportunities([]);
+      setShowOpportunities(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to disconnect');
+    }
   };
 
   const toggleIntegration = () => {

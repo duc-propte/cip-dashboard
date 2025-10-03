@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import session from 'express-session';
 import dotenv from 'dotenv';
 import { serverConfig } from './config/salesforce.js';
 import authRoutes from './routes/auth.js';
@@ -19,6 +20,19 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Session middleware - MUST be after CORS and before routes
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'your-secret-key-change-in-production',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production', // true in production (requires HTTPS)
+    httpOnly: true, // prevents XSS attacks
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' for cross-site in production
+  },
+}));
 
 // Request logging middleware
 app.use((req, res, next) => {

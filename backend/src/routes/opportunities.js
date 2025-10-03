@@ -6,11 +6,11 @@ import {
 
 const router = express.Router();
 
-// Get all opportunities (with optional filters)
-router.post('/', getOpportunities);
+// Get all opportunities (with optional filters) - uses session
+router.get('/', getOpportunities);
 
-// Get single opportunity by ID
-router.post('/:id', getOpportunityById);
+// Get single opportunity by ID - uses session
+router.get('/:id', getOpportunityById);
 
 export default router;
 

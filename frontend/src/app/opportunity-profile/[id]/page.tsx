@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, Building2, Calendar, DollarSign, TrendingUp, User, Loader2, AlertCircle } from 'lucide-react';
-import { fetchOpportunityById, type Opportunity, type SalesforceAuthData } from '@/lib/salesforceApi';
+import { fetchOpportunityById, checkAuthStatus, type Opportunity } from '@/lib/salesforceApi';
 
 function OpportunityProfileContent() {
   const router = useRouter();
@@ -22,15 +22,19 @@ function OpportunityProfileContent() {
 
   useEffect(() => {
     const loadOpportunity = async () => {
-      // Get auth data from localStorage
-      const authDataStr = localStorage.getItem('salesforce_auth');
-      if (!authDataStr) {
-        setError('Not authenticated. Please connect to Salesforce first.');
+      // Check authentication status
+      try {
+        const authStatus = await checkAuthStatus();
+        if (!authStatus.authenticated) {
+          setError('Not authenticated. Please connect to Salesforce first.');
+          setIsLoading(false);
+          return;
+        }
+      } catch (err) {
+        setError('Failed to check authentication status');
         setIsLoading(false);
         return;
       }
-
-      const authData: SalesforceAuthData = JSON.parse(authDataStr);
 
       if (!opportunityId) {
         setError('No opportunity ID provided');
@@ -39,7 +43,7 @@ function OpportunityProfileContent() {
       }
 
       try {
-        const data = await fetchOpportunityById(authData, opportunityId);
+        const data = await fetchOpportunityById(opportunityId);
         setOpportunity(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load opportunity');

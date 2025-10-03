@@ -1,14 +1,12 @@
 /**
  * Salesforce API Client
  * Handles all communication with the backend API
+ * Uses session-based authentication (cookies)
  */
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://cip-dashboard.onrender.com';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 export interface SalesforceAuthData {
-  accessToken: string;
-  refreshToken: string;
-  instanceUrl: string;
   userId: string;
   organizationId: string;
 }
@@ -42,19 +40,45 @@ export interface OpportunityFilters {
 }
 
 /**
- * Get OAuth authorization URL
+ * Get OAuth authorization URL - redirects to backend
  */
-export async function getAuthUrl(): Promise<string> {
-  const response = await fetch(`${API_BASE_URL}/api/auth/login`);
-  const data = await response.json();
-  return data.authUrl;
+export function getAuthUrl(): string {
+  return `${API_BASE_URL}/api/auth/login`;
 }
 
 /**
- * Fetch opportunities from Salesforce
+ * Check authentication status
+ */
+export async function checkAuthStatus(): Promise<{ authenticated: boolean; userId?: string; organizationId?: string }> {
+  const response = await fetch(`${API_BASE_URL}/api/auth/status`, {
+    credentials: 'include', // Important: include cookies
+  });
+  
+  if (!response.ok) {
+    throw new Error('Failed to check auth status');
+  }
+  
+  return await response.json();
+}
+
+/**
+ * Logout - destroy session
+ */
+export async function logout(): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/api/auth/logout`, {
+    method: 'POST',
+    credentials: 'include',
+  });
+  
+  if (!response.ok) {
+    throw new Error('Failed to logout');
+  }
+}
+
+/**
+ * Fetch opportunities from Salesforce (uses session)
  */
 export async function fetchOpportunities(
-  authData: SalesforceAuthData,
   filters?: OpportunityFilters
 ): Promise<Opportunity[]> {
   const queryParams = new URLSearchParams();
@@ -72,14 +96,8 @@ export async function fetchOpportunities(
   const response = await fetch(
     `${API_BASE_URL}/api/opportunities?${queryParams.toString()}`,
     {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        accessToken: authData.accessToken,
-        instanceUrl: authData.instanceUrl,
-      }),
+      method: 'GET',
+      credentials: 'include', // Important: include session cookie
     }
   );
 
@@ -93,23 +111,16 @@ export async function fetchOpportunities(
 }
 
 /**
- * Fetch a single opportunity by ID
+ * Fetch a single opportunity by ID (uses session)
  */
 export async function fetchOpportunityById(
-  authData: SalesforceAuthData,
   opportunityId: string
 ): Promise<Opportunity> {
   const response = await fetch(
     `${API_BASE_URL}/api/opportunities/${opportunityId}`,
     {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        accessToken: authData.accessToken,
-        instanceUrl: authData.instanceUrl,
-      }),
+      method: 'GET',
+      credentials: 'include', // Important: include session cookie
     }
   );
 
@@ -123,18 +134,12 @@ export async function fetchOpportunityById(
 }
 
 /**
- * Get current user information
+ * Get current user information (uses session)
  */
-export async function getUserInfo(authData: SalesforceAuthData) {
+export async function getUserInfo() {
   const response = await fetch(`${API_BASE_URL}/api/auth/user`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      accessToken: authData.accessToken,
-      instanceUrl: authData.instanceUrl,
-    }),
+    method: 'GET',
+    credentials: 'include', // Important: include session cookie
   });
 
   if (!response.ok) {

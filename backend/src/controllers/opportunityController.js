@@ -1,15 +1,16 @@
 import salesforceService from '../services/salesforceService.js';
 
 /**
- * Get all opportunities with optional filters
+ * Get all opportunities with optional filters (uses session)
  */
 export const getOpportunities = async (req, res) => {
-  const { accessToken, instanceUrl } = req.body;
-  const filters = req.query;
-
-  if (!accessToken || !instanceUrl) {
-    return res.status(400).json({ error: 'Access token and instance URL are required' });
+  // Get tokens from session
+  if (!req.session || !req.session.salesforce) {
+    return res.status(401).json({ error: 'Not authenticated' });
   }
+
+  const { accessToken, instanceUrl } = req.session.salesforce;
+  const filters = req.query;
 
   try {
     const opportunities = await salesforceService.getOpportunities(
@@ -25,20 +26,27 @@ export const getOpportunities = async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching opportunities:', error);
+    
+    // If token expired, return specific error code
+    if (error.message.includes('INVALID_SESSION_ID') || error.message.includes('Session expired')) {
+      return res.status(401).json({ error: 'Session expired', code: 'TOKEN_EXPIRED' });
+    }
+    
     res.status(500).json({ error: error.message });
   }
 };
 
 /**
- * Get a single opportunity by ID
+ * Get a single opportunity by ID (uses session)
  */
 export const getOpportunityById = async (req, res) => {
-  const { id } = req.params;
-  const { accessToken, instanceUrl } = req.body;
-
-  if (!accessToken || !instanceUrl) {
-    return res.status(400).json({ error: 'Access token and instance URL are required' });
+  // Get tokens from session
+  if (!req.session || !req.session.salesforce) {
+    return res.status(401).json({ error: 'Not authenticated' });
   }
+
+  const { accessToken, instanceUrl } = req.session.salesforce;
+  const { id } = req.params;
 
   if (!id) {
     return res.status(400).json({ error: 'Opportunity ID is required' });
@@ -57,6 +65,12 @@ export const getOpportunityById = async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching opportunity:', error);
+    
+    // If token expired, return specific error code
+    if (error.message.includes('INVALID_SESSION_ID') || error.message.includes('Session expired')) {
+      return res.status(401).json({ error: 'Session expired', code: 'TOKEN_EXPIRED' });
+    }
+    
     res.status(500).json({ error: error.message });
   }
 };
